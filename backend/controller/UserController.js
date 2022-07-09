@@ -15,10 +15,10 @@ const generateToken = (id) => {
 //Register and sing in
 const register = async (req, res) => {
     
-    const [name, email, password] = req.body
+    const {name, email, password} = req.body
 
-    //check if user exist
-    const user = await User.findOne({email})
+    //check if user exist   
+    const user = await User.findOne({ email })          
 
     if (user) {
         res.status(422).json({errors: ["Este email já foi cadastrado"]})
@@ -41,7 +41,7 @@ const register = async (req, res) => {
         res
             .status(422)
             .json({errors: ["Por favor, tente novamente mais tarde"]})
-             
+
         return
     }
 
@@ -72,9 +72,9 @@ const login = async (req, res) => {
 
     //return user with token
     res.status(201).json({
-        _id: newUser._id,
+        _id: user._id,
         profileImage: user.profileImage,
-        token: generateToken(newUser._id)
+        token: generateToken(user._id)
     })
 }
 
