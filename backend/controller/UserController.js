@@ -14,7 +14,42 @@ const generateToken = (id) => {
 
 //Register and sing in
 const register = async (req, res) => {
-    res.send("REGISTRO")
+    
+    const [name, email, password] = req.body
+
+    //check if user exist
+    const user = await User.findOne({email})
+
+    if (user) {
+        res.status(422).json({errors: ["Este email já foi cadastrado"]})
+        return
+    }
+
+    //generate password hash
+    const salt = await bcrypt.genSalt()
+    const passwordHash = await salt.hash(password, salt)
+
+    //create user
+    const newUser = await User.create({
+        name,
+        email,
+        password: passwordHash
+    })
+
+    //if user was created succesfully, return token
+    if (!newUser) {
+        res
+            .status(422)
+            .json({errors: ["Por favor, tente novamente mais tarde"]})
+             
+        return
+    }
+
+
+    res.status(201).json({
+        _id: newUser._id,
+        token: generateToken(newUser._id)
+    })
 }
 
 //Login
