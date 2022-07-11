@@ -7,7 +7,7 @@ const jwtSecret = process.env.JWT_SECRET
 
 //Generate Token
 const generateToken = (id) => {
-    return jwt.sing({ id }, jwtSecret, {
+    return jwt.sign({ id }, jwtSecret, {
         expiresIn: "7d"
     })
 }
@@ -27,7 +27,7 @@ const register = async (req, res) => {
 
     //generate password hash
     const salt = await bcrypt.genSalt()
-    const passwordHash = await salt.hash(password, salt)
+    const passwordHash = await bcrypt.hash(password, salt)
 
     //create user
     const newUser = await User.create({
