@@ -1,8 +1,8 @@
 const express = require("express")
 const router = express()
 
-//register
 router.use("/api/users", require("./UserRoutes"))
+router.use("/api/photos", require("./PhotoRoutes"))
 
 //test router
 router.get("/", (req, res) => {
