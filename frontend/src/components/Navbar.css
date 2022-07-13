@@ -1,0 +1,44 @@
+#navbar {
+    background-color: #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .1em 1em;
+    border-bottom: 1px solid #363636;
+}
+
+#search_form {
+    position: relative;
+    width: 20%;
+}
+
+#search_form svg {
+    position: absolute;
+    top: 10px;
+    left: 9px;
+}
+
+#search_form input {
+    width: 100%;
+    padding-left: 2.5em;
+    border: none;
+    border-radius: 5px;
+    margin: 0;
+}
+
+#nav_links {
+    display: flex;
+    align-items: center;
+}
+
+#nav_links li {
+    margin-right: 1em;
+}
+
+#nav_links span {
+    cursor: pointer;
+}
+
+#nav_links svg {
+    font-size: 1.5em;
+}
