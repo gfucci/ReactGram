@@ -33,11 +33,11 @@ export const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(register.pending, (state) => {
+            .addCase(profile.pending, (state) => {
                 state.loading = true
                 state.error = false
             })
-            .addCase(register.fulfilled, (state, action) => {
+            .addCase(profile.fulfilled, (state, action) => {
                 state.loading = false
                 state.error = null
                 state.success = true
