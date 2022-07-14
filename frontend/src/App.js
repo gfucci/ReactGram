@@ -15,6 +15,7 @@ import { useAuth } from './hooks/useAuth';
 import Home from './pages/Home/Home';
 import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
+import EditProfile from './pages/EditProfile/EditProfile';
 
 function App() {
 
@@ -30,7 +31,10 @@ function App() {
         <NavBar />
         <div className="container">
           <Routes>
+            {/**ROTAS AUTENTICADAS */}
             <Route path='/' element={auth ? <Home /> : <Navigate to="/login" />} />
+            <Route path='/profile' element={auth ? <EditProfile /> : <Navigate to="/login" />} />
+            {/**ROTAS NÃO AUTENTICADAS */}
             <Route path='/register' element={!auth ? <Register /> : <Navigate to="/" />} />
             <Route path='/login' element={!auth ? <Login /> : <Navigate to="/" />} />
           </Routes>
