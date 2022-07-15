@@ -1,4 +1,8 @@
+//CSS
 import './EditProfile.css'
+
+//api
+import { uploads } from '../../utils/config'
 
 //components
 import Message from '../../components/Message'
@@ -8,19 +12,36 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 //redux
+import { profile, resetMessage } from "../../slices/userSlice"
 
 
 const EditProfile = () => {
 
+    //states
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [bio, setBio] = useState("")
     const [profileImage, setProfileImage] = useState("")
+    const [previewImage, setPreviewImage] = useState("")
 
-    //const { error, loading } = useSelector((state) => state.user)
+    const { user, message, error, loading } = useSelector((state) => state.user)
 
     const dispatch = useDispatch()
+
+    //load user data
+    useEffect(() => {
+        dispatch(profile());
+      }, [dispatch]);
+
+    //fill data form
+    useEffect(() => {
+        if (user) {
+          setName(user.name);
+          setEmail(user.email);
+          setBio(user.bio);
+        }
+      }, [user]);
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -33,10 +54,10 @@ const EditProfile = () => {
         {/**PREVIE DA IMAGEM */}
         <form onSubmit={handleSubmit}>
             <input 
-                type="text" 
-                placeholder='Nome'
-                value={name || ""}
+                type="text"
+                placeholder="Nome"
                 onChange={(e) => setName(e.target.value)}
+                value={name || ""}
             />
             <input 
                 type="email"
