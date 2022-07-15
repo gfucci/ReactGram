@@ -10,7 +10,7 @@ const initialState = {
     message: null
 }
 
-//get user details
+//get user details (profile)
 export const profile = createAsyncThunk(
     "user/profile",
     async (user, thunkAPI) => {
@@ -35,6 +35,17 @@ export const updateProfile = createAsyncThunk(
         if (data.errors) {
             return thunkAPI.rejectWithValue(data.errors[0]);
         }
+
+        return data
+    }
+)
+
+//get user detail generic
+export const getUserDetails = createAsyncThunk(
+    "user/getdetails",
+    async (id) => {
+
+        const data = await userService.getUserDetails(id)
 
         return data
     }
@@ -76,6 +87,17 @@ export const userSlice = createSlice({
                 state.loading = false
                 state.error = action.payload
                 state.user = null
+                state.success = false
+            })
+            .addCase(getUserDetails.pending, (state) => {
+                state.loading = true
+                state.error = false
+            })
+            .addCase(getUserDetails.fulfilled, (state, action) => {
+                state.loading = false
+                state.error = null
+                state.success = true
+                state.user = action.payload
             })
     }  
 })
