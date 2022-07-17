@@ -88,7 +88,7 @@ const EditProfile = () => {
 
         setPreviewImage(image)
 
-        //update imag
+        //update image
         setProfileImage(image)
     }
 

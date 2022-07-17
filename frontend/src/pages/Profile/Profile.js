@@ -14,6 +14,7 @@ import { uploads } from '../../utils/config'
 
 //redux
 import { getUserDetails } from '../../slices/userSlice'
+import { publishPhoto, resetMessage } from '../../slices/photoSlice'
 
 const Profile = () => {
 
@@ -23,6 +24,12 @@ const Profile = () => {
 
   const { user, loading } = useSelector((state) => state.user)
   const { user: userAuth } = useSelector((state) => state.auth) 
+  const { 
+    photos, 
+    loading: loadingPhoto, 
+    error: errorPhoto, 
+    message: messagePhoto 
+  } = useSelector((state) => state.photo)
 
   //load user data
   useEffect(() => {
@@ -38,8 +45,36 @@ const Profile = () => {
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
 
+  //change image state
+  const handleFile = (e) => {
+
+    const image = e.target.files[0]
+
+    setImage(image)
+  }
+
+  //publish a new photo
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+
+    const photoData = {
+      title,
+      image,
+    };
+
+    // build form data
+    const formData = new FormData();
+
+    const photoFormData = Object.keys(photoData).forEach((key) =>
+      formData.append(key, photoData[key])
+    );
+
+    formData.append("photo", photoFormData);
+
+    dispatch(publishPhoto(formData));
+
+    //reset title
+    setTitle("")
   }
 
   //loading state
@@ -68,7 +103,7 @@ const Profile = () => {
                 <input 
                   type="text" 
                   placeholder='Nome da foto'
-                  value={title}
+                  value={title || ""}
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </label>
@@ -76,13 +111,15 @@ const Profile = () => {
                 <span>Imagem:</span>
                 <input 
                   type="file"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
+                  onChange={handleFile}
                 />
               </label>
-              <input type="submit" value="Postar" />
+              {!loadingPhoto && <input type="submit" value="Postar" />}
+              {loadingPhoto && <input type="submit" disabled value="Aguarde..." />}
             </form>
           </div>
+          {errorPhoto && <Message msg={errorPhoto} type="error" />}
+          {messagePhoto && <Message msg={messagePhoto} type="success" />}
         </>
       )}
     </div>
