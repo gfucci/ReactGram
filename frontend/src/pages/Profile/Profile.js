@@ -14,7 +14,7 @@ import { uploads } from '../../utils/config'
 
 //redux
 import { getUserDetails } from '../../slices/userSlice'
-import { publishPhoto, resetMessage, getUserPhotos } from '../../slices/photoSlice'
+import { publishPhoto, resetMessage, getUserPhotos, deletePhoto } from '../../slices/photoSlice'
 
 const Profile = () => {
 
@@ -54,6 +54,13 @@ const Profile = () => {
     setImage(image)
   }
 
+  //reset messages
+  const resetComponentMessage = () => {
+    setTimeout(() => {
+      dispatch(resetMessage())
+    }, 2000)
+  }
+
   //publish a new photo
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -76,6 +83,15 @@ const Profile = () => {
 
     //reset title
     setTitle("")
+
+    resetComponentMessage()
+  }
+
+  //delete photo
+  const handleDelete = (id) => {
+    
+    dispatch(deletePhoto(id))
+    resetComponentMessage()
   }
 
   //loading state
@@ -141,7 +157,9 @@ const Profile = () => {
                       <BsFillEyeFill />
                     </Link>
                     <BsPencilFill />
-                    <BsXLg />
+                    <BsXLg 
+                      onClick={() => handleDelete(photo._id)}
+                    />
                   </div>
                 ) : (
                   <Link className='btn' to={`/photos/${photo._id}`}>
