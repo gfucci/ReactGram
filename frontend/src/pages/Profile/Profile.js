@@ -4,7 +4,7 @@ import './Profile.css'
 //Components
 import Message from '../../components/Message'
 import { Link } from 'react-router-dom'
-import { bsFillEyerFill, BsPencilFill, BsXLg } from 'react-icons/bs'
+import { BsFillEyeFill, BsPencilFill, BsXLg } from 'react-icons/bs'
 
 //hooks
 import { useState, useEffect, useRef } from 'react'
@@ -14,7 +14,7 @@ import { uploads } from '../../utils/config'
 
 //redux
 import { getUserDetails } from '../../slices/userSlice'
-import { publishPhoto, resetMessage } from '../../slices/photoSlice'
+import { publishPhoto, resetMessage, getUserPhotos } from '../../slices/photoSlice'
 
 const Profile = () => {
 
@@ -35,6 +35,7 @@ const Profile = () => {
   useEffect(() => {
 
     dispatch(getUserDetails(id))
+    dispatch(getUserPhotos(id))
 
   }, [dispatch, id])
 
@@ -42,8 +43,8 @@ const Profile = () => {
   const newPhotoForm = useRef()
   const editPhotoForm = useRef()
 
-  const [title, setTitle] = useState("")
-  const [image, setImage] = useState("")
+  const [title, setTitle] = useState()
+  const [image, setImage] = useState()
 
   //change image state
   const handleFile = (e) => {
@@ -122,6 +123,37 @@ const Profile = () => {
           {messagePhoto && <Message msg={messagePhoto} type="success" />}
         </>
       )}
+      <div className="user_photos">
+        <h2>Fotos publicadas:</h2>
+        <div className="photos_container">
+          {photos &&
+            photos.map((photo) => (
+              <div className="photo" key={photo._id}>
+                {photo.image && (
+                  <img
+                    src={`${uploads}/photos/${photo.image}`}
+                    alt={photo.title}
+                  />
+                )}
+                {id === userAuth._id ? (
+                  <div className="actions">
+                    <Link to={`/photos/${photo._id}`}>
+                      <BsFillEyeFill />
+                    </Link>
+                    <BsPencilFill />
+                    <BsXLg />
+                  </div>
+                ) : (
+                  <Link className='btn' to={`/photos/${photo._id}`}>
+                    <BsFillEyeFill />
+                  </Link>
+                )}
+              </div>
+            ))
+          }
+          {photos.length === 0 && <p>Não há fotos publicadas.</p>}
+        </div>
+      </div>
     </div>
   )
 }

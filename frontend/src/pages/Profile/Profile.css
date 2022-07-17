@@ -17,3 +17,41 @@
     border-radius: 50%;
     margin-right: 2em;
 }
+
+.new_photo {
+    padding: 1em;
+    border: 1px solid #363636;
+}
+
+.photos_container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.photo {
+    width: 32%;
+    margin: 0.3%;
+}
+
+.photo img {
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    padding: 10px;
+    justify-content: space-around;
+}
+
+.actions svg {
+    cursor: pointer;
+}
+
+.edit_photo {
+    margin-bottom: 1em;
+}
+
+.edit_photo img {
+    width: 100%;
+    margin-bottom: 1em;
+}
