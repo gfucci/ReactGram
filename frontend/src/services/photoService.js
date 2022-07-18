@@ -122,6 +122,21 @@ const getPhotos = async (token) => {
   }
 };
 
+//search photo
+const searchPhotos = async (query, token) => {
+  const config = requestConfig("GET", null, token);
+
+  try {
+    const res = await fetch(api + "/photos/search?q=" + query, config)
+      .then((res) => res.json())
+      .catch((err) => err);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const photoService = {
     publishPhoto,
     getUserPhotos,
@@ -130,7 +145,8 @@ const photoService = {
     getPhoto,
     likePhoto,
     commentPhoto,
-    getPhotos
+    getPhotos,
+    searchPhotos
 }
 
 export default photoService
