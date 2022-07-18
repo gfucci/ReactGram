@@ -2,13 +2,13 @@
 
 ## Este projeto consiste em uma rede social para postar fotos, feito com MERN stack.
 
-### Funcionalidade:
-*Autenticação (registro e login).
-*Edição de perfil.
-*Postar fotos.
-*Fazer comentários.
-*Procurar fotos pelo tíulo.
-*Feed de fotos dos usuários.
+### Funcionalidades:
+* Autenticação (registro e login).
+* Edição de perfil.
+* Postar fotos.
+* Fazer comentários.
+* Procurar fotos pelo tíulo.
+* Feed de fotos dos usuários.
 
 ### Tecnologias utilizadas:
 * HTML5
