@@ -17,7 +17,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useResetComponentMessage } from '../../hooks/useResetComponentMessage'
 
 //redux
-import { getPhoto, likePhoto } from '../../slices/photoSlice'
+import { 
+    commentPhoto, 
+    getPhoto, 
+    likePhoto 
+} from '../../slices/photoSlice'
 
 const Photo = () => {
 
@@ -33,18 +37,31 @@ const Photo = () => {
         message
     } = useSelector((state) => state.photo)
 
+    const [commentText, setCommentText] = useState("")
+
     //load photo data
     useEffect(() => {
         dispatch(getPhoto(id))
     }, [dispatch, id])
 
-    //coments
-
-
     //like
     const handleLike = () => {
         dispatch(likePhoto(photo._id))
 
+        resetMessage()
+    }
+
+    //comments
+    const handleComment = (e) => {
+        e.preventDefault()
+
+        const commentData = {
+            comment: commentText,
+            id: photo._id
+        }
+
+        dispatch(commentPhoto(commentData))
+        setCommentText("")
         resetMessage()
     }
 
@@ -64,6 +81,42 @@ const Photo = () => {
         <div className="message_container">
             {error && <Message msg={error} type='error' />}
             {message && <Message msg={message} type='success' />}
+        </div>
+        <div className="comments">
+            {photo.comments && (
+                <>
+                    <h2>Comentarios: ({photo.comments.length})</h2>
+                    <form onSubmit={handleComment}>
+                        <input 
+                            type="text" 
+                            placeholder='Insira seu comentário'
+                            value={commentText || ""}
+                            onChange={(e) => setCommentText(e.target.value)}
+                        />
+                        <input 
+                            type="submit" 
+                            value="Comentar" 
+                        />
+                    </form>
+                    {photo.comments.length === 0 && <p>Não há comentários...</p> }
+                    {photo.comments.map((comment) => (
+                        <div className="comment">
+                            <div className="author" key={comment.comment}>
+                                {comment.userImage && (
+                                    <img 
+                                        src={`${uploads}/users/${comment.userImage}`} 
+                                        alt={comment.userName} 
+                                    />
+                                )}
+                                <Link to={`/users/${comment.userId}`}>
+                                    <p>{comment.userName}</p>
+                                </Link>
+                            </div>
+                            <p>{comment.comment}</p>
+                        </div>
+                    ))}
+                </>
+            )}
         </div>
     </div>
   )
