@@ -13,6 +13,7 @@ import PhotoItem from '../../components/PhotoItem'
 import LikeContainer from '../../components/LikeContainer'
 
 //redux
+import { searchPhotos, likePhoto } from '../../slices/photoSlice'
 
 const Search = () => {
 
@@ -27,11 +28,47 @@ const Search = () => {
 
   //load search
   useEffect(() => {
-    dispatch(search())
+    dispatch(searchPhotos(search))
   }, [dispatch, search])
 
+  //like
+  const handleLike = (photo = null) => {
+    dispatch(likePhoto(photo._id))
+
+    resetMessage()
+  }
+
+  //load state
+  if (loading) {
+    return <p>Carregando...</p>
+  }
+
   return (
-    <div>Search {search}</div>
+    <div id='search'>
+      <h2>Voce está buscando por: {search}</h2>
+      {photos &&
+        photos.map((photo) => (
+          <div key={photo._id}>
+            <PhotoItem 
+              photo={photo} 
+            />
+            <LikeContainer 
+              user={user} 
+              photo={photo}
+              handleLike={handleLike}
+            />
+            <Link className='btn' to={`/photos/${photo._id}`}>
+              Ver mais
+            </Link>
+          </div>
+        ))
+      }
+      {photos.length === 0 &&
+        <h2 className='no_search'>
+          Não foram encontrados resultados.
+        </h2>
+      }
+    </div>
   )
 }
 
